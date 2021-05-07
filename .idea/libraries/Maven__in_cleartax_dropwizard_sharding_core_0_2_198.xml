@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: in.cleartax.dropwizard:sharding-core:0.2.198">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/in/cleartax/dropwizard/sharding-core/0.2.198/sharding-core-0.2.198.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/in/cleartax/dropwizard/sharding-core/0.2.198/sharding-core-0.2.198-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/in/cleartax/dropwizard/sharding-core/0.2.198/sharding-core-0.2.198-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

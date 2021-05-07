@@ -1,27 +1,46 @@
-package aws.example.helloswf.StudentService;
+package com.helloswf;
 
+import com.google.inject.Module;
 import com.helloswf.dao.StudentDao;
-import com.helloswf.entities.Student;
-import com.helloswf.services.StudentService;
+import com.helloswf.resource.StudentResource;
 import com.helloswf.services.StudentServiceImpl;
+import in.cleartax.dropwizard.sharding.transactions.UnitOfWorkModule;
+import io.dropwizard.Application;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.context.internal.ManagedSessionContext;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import ru.vyarus.dropwizard.guice.GuiceBundle;
 
-import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StudentServiceTest {
-    private StudentService studentService;
-    private StudentDao studentDao;
-    @Before
-    public void setup() {
+public class StudentApplication extends Application<StudentConfiguration> {
+
+    private Module studentModule;
+    public static void main(final String[] args) throws Exception {
+        System.out.println("staring Server..... !");
+        new StudentApplication().run(args);
+    }
+
+    @Override
+    public void run(StudentConfiguration studentConfiguration, Environment environment) throws Exception {
+        final StudentDao studentDao = new StudentDao(getSessionFactory());
+        final StudentServiceImpl studentService = new StudentServiceImpl(studentDao);
+        final StudentResource studentResource = new StudentResource(studentService);
+        environment.jersey().register(studentResource);
+    }
+
+    @Override
+    public void initialize(Bootstrap<StudentConfiguration> bootstrap){
+        studentModule = new StudentModule();
+        GuiceBundle.Builder<StudentConfiguration> guiceBundleBuilder = GuiceBundle.<StudentConfiguration>builder()
+                .modules(studentModule,
+                        new UnitOfWorkModule()).enableAutoConfig(StudentModule.PCKGS);
+
+    }
+
+    private SessionFactory getSessionFactory(){
         Configuration configuration = new Configuration();
 //        configuration.setProperty("hibernate.dialect",
 //                "org.hibernate.dialect.MySQLDialect");
@@ -40,19 +59,6 @@ public class StudentServiceTest {
         Session session= sessionFactory.openSession();
         session.beginTransaction();
         ManagedSessionContext.bind(session);
-        studentDao = new StudentDao(sessionFactory);
-        studentService = new StudentServiceImpl(studentDao);
-    }
-
-    @Test
-    public void testStudentService() {
-        Student student = Student.builder()
-                .firstName("kamlesh")
-                .lastName("biloniya")
-                .rollNumber(10001)
-                .build();
-        studentService.createOrUpdate(student);
-        List<Student> expectStudent = studentService.getStudent(10001);
-        Assertions.assertEquals(expectStudent.get(0), student);
+        return sessionFactory;
     }
 }

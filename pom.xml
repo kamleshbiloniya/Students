@@ -10,7 +10,7 @@
   <url>http://maven.apache.org</url>
 
   <properties>
-    <mainClass>com.helloswf.Application</mainClass>
+    <mainClass>com.helloswf.StudentApplication</mainClass>
     <dropwizard.version>2.0.21</dropwizard.version>
     <liquibase.version>4.3.5</liquibase.version>
     <mysql-version>5.1.38</mysql-version>

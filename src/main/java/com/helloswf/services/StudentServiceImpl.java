@@ -1,5 +1,6 @@
 package com.helloswf.services;
 
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.helloswf.entities.Student;
 import com.helloswf.dao.StudentDao;
@@ -18,7 +19,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @UnitOfWork
     public List<Student> getStudent(int rollNumber) {
-        return studentDao.getStudent(rollNumber);
+        try{
+            return studentDao.getStudent(rollNumber);
+        } catch (Exception e) {
+            return Lists.newArrayList(Student.getDefault());
+        }
     }
 
     @Override

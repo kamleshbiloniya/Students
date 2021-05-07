@@ -1,0 +1,5 @@
+server:
+  rootPath: /restApi/
+  applicationConnectors:
+    - type: http
+      port: 40400

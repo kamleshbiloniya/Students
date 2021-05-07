@@ -40,4 +40,13 @@ public class Student implements Serializable {
 
     @Column(name = "roll_number")
     private int rollNumber;
+
+    public static Student getDefault() {
+        return Student.builder()
+                .id(0)
+                .firstName("Rohan")
+                .lastName("yadav")
+                .rollNumber(1234)
+                .build();
+    }
 }
